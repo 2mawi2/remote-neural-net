@@ -35,7 +35,7 @@ def receive():
 
                 result = message_handler.on_message(data)
 
-                conn.sendall(b"result")
+                conn.sendall(result)
 
         print(f"Agent disconnected.")
 

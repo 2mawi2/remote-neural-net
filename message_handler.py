@@ -15,5 +15,6 @@ class MessageHandler:
             self.nn.learn(result.inp, result.target)
             return b""
         elif result.method is Method.GETVALUE:
-            return self.nn.get_value(result.inp)
+            value = self.nn.get_value(result.inp)
+            return bytes(f'{value:.9f}')
         pass
