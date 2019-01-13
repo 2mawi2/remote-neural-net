@@ -13,7 +13,7 @@ class MessageHandler:
 
         if result.method is Method.LEARN:
             self.nn.learn(result.inp, result.target)
-            return b""
+            return b" "  # we need to return at least one space of bytes
         elif result.method is Method.GETVALUE:
             value = self.nn.get_value(result.inp)
             return bytes(f'{value:.9f}')

@@ -20,10 +20,10 @@ def calculation():
 def receive():
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:  # tcp
         s.bind((HOST, PORT))
-        s.listen(10)
-        s.settimeout(10.0)
+        s.listen(1)
+        s.settimeout(10.0)  # if no agent connects within 10 seconds -> timeout
         conn, addr = s.accept()
-        conn.settimeout(3.0)
+        conn.settimeout(3.0)  # if no message response within 3 seconds -> timeout
         print(f"Agent connected.")
 
         while conn:
@@ -38,6 +38,8 @@ def receive():
                 conn.sendall(result)
 
         print(f"Agent disconnected.")
+
+        conn.close()
 
 
 if __name__ == '__main__':
