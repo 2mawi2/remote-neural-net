@@ -11,7 +11,7 @@ import numpy as np
 class NeuralNetwork:
     def __init__(self):
         self.weight_backup = "weights.h5"
-        self.test_mode = False
+        self.test_mode = True
         self.learning_rate = 0.001
         self.memory = deque(maxlen=512)  # buffer for memory replay
         self.sample_batch_size = 32
@@ -45,7 +45,7 @@ class NeuralNetwork:
         return model
 
     def save_model(self):
-        self.model.save(self.weight_backup)
+        self.target_model.save(self.weight_backup)
 
     def learn(self, inp: NeuralNetworkInput, target: float):
         self.memory.append((inp, target))
