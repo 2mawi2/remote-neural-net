@@ -21,9 +21,9 @@ def receive():
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:  # tcp
         s.bind((HOST, PORT))
         s.listen(1)
-        s.settimeout(10.0)  # if no agent connects within 10 seconds -> timeout
+        s.settimeout (30.0)  # if no agent connects within 10 seconds -> timeout
         conn, addr = s.accept()
-        conn.settimeout(3.0)  # if no message response within 3 seconds -> timeout
+        #conn.settimeout(3.0)  # if no message response within 3 seconds -> timeout
         print(f"Agent connected.")
 
         while conn:
@@ -43,4 +43,7 @@ def receive():
 
 
 if __name__ == '__main__':
-    receive()
+    try:
+        receive()
+    finally:
+        nn.save_model()

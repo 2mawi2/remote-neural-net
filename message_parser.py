@@ -56,3 +56,7 @@ class MessageParser:
             inp=self._parse_inp(params[1]),
             target=self._parse_target(params[2])
         )
+
+    def parse_output(self, value) -> bytes:
+        return bytes(f'{value:.9f}', encoding="ASCII")
+
