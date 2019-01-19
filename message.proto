@@ -1,0 +1,38 @@
+syntax = "proto2";
+
+package message;
+
+message Message {
+    message State {
+        optional double ballVelX = 1;
+        optional double ballVelY = 2;
+        optional double playerVelX = 3;
+        optional double playerVelY = 4;
+        optional double distance = 5;
+        optional double angleToBall = 6;
+    }
+
+    message Config {
+        optional bool isTraining = 1;
+    }
+
+    message Request {
+        optional State state = 1;
+        optional double target = 2;
+        optional Config config = 3;
+    }
+
+    message Response {
+        optional double value = 1;
+    }
+
+    enum MessageType {
+        GETVALUE = 1;
+        LEARN = 2;
+        CONFIG = 3;
+    }
+
+    optional MessageType type = 1;
+    optional Request request = 2;
+    optional Response response = 3;
+}

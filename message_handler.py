@@ -1,20 +1,29 @@
+from model import NeuralNetworkInput
 from neural_network import NeuralNetwork
-from message_parser import MessageParser, Method
+from message_pb2 import Message
 
 
 class MessageHandler:
 
-    def __init__(self, nn: NeuralNetwork, parser: MessageParser):
+    def __init__(self, nn: NeuralNetwork):
         self.nn = nn
-        self.parser = parser
 
     def on_message(self, data: bytes) -> bytes:
-        result = self.parser.parse_input(data)
+        print("message")
+        m = Message()
 
-        if result.method is Method.LEARN:
-            self.nn.learn(result.inp, result.target)
-            return b"NONCE"  # we need to return at least one space of bytes
-        elif result.method is Method.GETVALUE:
-            value = self.nn.get_value(result.inp)
-            return self.parser.parse_output(value)
+        m.ParseFromString(data)
+        print("type: " + m.type)
+        if m.type is Message.LEARN:
+            state = NeuralNetworkInput.from_proto(m.request.state)
+            self.nn.learn(state, m.request.target)
+            m.Clear()
+            m.type = Message.LEARN
+        elif m.type is Message.GETVALUE:
+            state = NeuralNetworkInput.from_proto(m.request.state)
+            value = self.nn.get_value(state)
+            m.Clear()
+            m.response.value = value
+            m.type = Message.GETVALUE
 
+        return m.SerializeToString()

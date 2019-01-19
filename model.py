@@ -1,17 +1,10 @@
 class NeuralNetworkInput:
-    def __init__(self,
-                 ball_vel_x: float,
-                 ball_vel_y: float,
-                 player_vel_x: float,
-                 player_vel_y: float,
-                 distance: float,
-                 ang_to_ball: float):
-        self.ang_to_ball = ang_to_ball
-        self.distance = distance
-        self.player_vel_y = player_vel_y
-        self.player_vel_x = player_vel_x
-        self.ball_vel_y = ball_vel_y
-        self.ball_vel_x = ball_vel_x
+    ang_to_ball: float
+    distance: float
+    player_vel_y: float
+    player_vel_x: float
+    ball_vel_y: float
+    ball_vel_x: float
 
     def get_state(self) -> [float]:
         return [
@@ -34,10 +27,13 @@ class NeuralNetworkInput:
                and self.distance == o.distance \
                and self.ang_to_ball == o.ang_to_ball
 
-
-class LearnRequest:
-    def __init__(self,
-                 nn_input: NeuralNetworkInput,
-                 value: float):
-        self.value = value
-        self.input = nn_input
+    @staticmethod
+    def from_proto(state):
+        i = NeuralNetworkInput()
+        i.ang_to_ball = state.angleToBall
+        i.distance = state.distance
+        i.player_vel_y = state.playerVelY
+        i.player_vel_x = state.playerVelX
+        i.ball_vel_y = state.ballVelX
+        i.ball_vel_x = state.ballVelY
+        return i
