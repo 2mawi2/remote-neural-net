@@ -26,19 +26,15 @@ def receive():
 
         while conn:
             while True:
-                data = conn.recv(8192)
+                data = conn.recv(4096, socket.MSG_WAITALL)
+
 
                 if not data:
                     break
 
-                try:
-                    result = message_handler.on_message(data)
-                except:
-                    print("INVALID MESSAGE received. Closing connection.")
-                    conn.close()
-                    return
+                result = message_handler.on_message(data)
 
-                conn.sendall(result)
+                conn.send(result)
 
         print(f"Agent disconnected.")
 

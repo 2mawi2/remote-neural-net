@@ -3,6 +3,7 @@
 
 import sys
 _b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))
+from google.protobuf.internal import enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
@@ -17,114 +18,58 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='message.proto',
   package='message',
-  syntax='proto2',
+  syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\rmessage.proto\x12\x07message\"\xe1\x03\n\x07Message\x12*\n\x04type\x18\x01 \x01(\x0e\x32\x1c.message.Message.MessageType\x12)\n\x07request\x18\x02 \x01(\x0b\x32\x18.message.Message.Request\x12+\n\x08response\x18\x03 \x01(\x0b\x32\x19.message.Message.Response\x1az\n\x05State\x12\x10\n\x08\x62\x61llVelX\x18\x01 \x01(\x01\x12\x10\n\x08\x62\x61llVelY\x18\x02 \x01(\x01\x12\x12\n\nplayerVelX\x18\x03 \x01(\x01\x12\x12\n\nplayerVelY\x18\x04 \x01(\x01\x12\x10\n\x08\x64istance\x18\x05 \x01(\x01\x12\x13\n\x0b\x61ngleToBall\x18\x06 \x01(\x01\x1a\x1c\n\x06\x43onfig\x12\x12\n\nisTraining\x18\x01 \x01(\x08\x1ai\n\x07Request\x12%\n\x05state\x18\x01 \x01(\x0b\x32\x16.message.Message.State\x12\x0e\n\x06target\x18\x02 \x01(\x01\x12\'\n\x06\x63onfig\x18\x03 \x01(\x0b\x32\x17.message.Message.Config\x1a\x19\n\x08Response\x12\r\n\x05value\x18\x01 \x01(\x01\"2\n\x0bMessageType\x12\x0c\n\x08GETVALUE\x10\x01\x12\t\n\x05LEARN\x10\x02\x12\n\n\x06\x43ONFIG\x10\x03')
+  serialized_pb=_b('\n\rmessage.proto\x12\x07message\"\x1c\n\x06\x43onfig\x12\x12\n\nisTraining\x18\x01 \x01(\x08\"z\n\x05State\x12\x10\n\x08\x62\x61llVelX\x18\x01 \x01(\x01\x12\x10\n\x08\x62\x61llVelY\x18\x02 \x01(\x01\x12\x12\n\nplayerVelX\x18\x03 \x01(\x01\x12\x12\n\nplayerVelY\x18\x04 \x01(\x01\x12\x10\n\x08\x64istance\x18\x05 \x01(\x01\x12\x13\n\x0b\x61ngleToBall\x18\x06 \x01(\x01\"Y\n\x07Request\x12\x1d\n\x05state\x18\x01 \x01(\x0b\x32\x0e.message.State\x12\x0e\n\x06target\x18\x02 \x01(\x01\x12\x1f\n\x06\x63onfig\x18\x03 \x01(\x0b\x32\x0f.message.Config\"\x19\n\x08Response\x12\r\n\x05value\x18\x01 \x01(\x01\"\x8c\x01\n\x07Message\x12\"\n\x04type\x18\x01 \x01(\x0e\x32\x14.message.MessageType\x12!\n\x07request\x18\x02 \x01(\x0b\x32\x10.message.Request\x12#\n\x08response\x18\x03 \x01(\x0b\x32\x11.message.Response\x12\x15\n\rendConnection\x18\x04 \x01(\x08*@\n\x0bMessageType\x12\x0c\n\x08GETVALUE\x10\x00\x12\t\n\x05LEARN\x10\x01\x12\n\n\x06\x43ONFIG\x10\x02\x12\x0c\n\x08RESPONSE\x10\x04\x62\x06proto3')
 )
 
-
-
-_MESSAGE_MESSAGETYPE = _descriptor.EnumDescriptor(
+_MESSAGETYPE = _descriptor.EnumDescriptor(
   name='MessageType',
-  full_name='message.Message.MessageType',
+  full_name='message.MessageType',
   filename=None,
   file=DESCRIPTOR,
   values=[
     _descriptor.EnumValueDescriptor(
-      name='GETVALUE', index=0, number=1,
+      name='GETVALUE', index=0, number=0,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='LEARN', index=1, number=2,
+      name='LEARN', index=1, number=1,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='CONFIG', index=2, number=3,
+      name='CONFIG', index=2, number=2,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='RESPONSE', index=3, number=4,
       serialized_options=None,
       type=None),
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=458,
-  serialized_end=508,
+  serialized_start=441,
+  serialized_end=505,
 )
-_sym_db.RegisterEnumDescriptor(_MESSAGE_MESSAGETYPE)
+_sym_db.RegisterEnumDescriptor(_MESSAGETYPE)
+
+MessageType = enum_type_wrapper.EnumTypeWrapper(_MESSAGETYPE)
+GETVALUE = 0
+LEARN = 1
+CONFIG = 2
+RESPONSE = 4
 
 
-_MESSAGE_STATE = _descriptor.Descriptor(
-  name='State',
-  full_name='message.Message.State',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='ballVelX', full_name='message.Message.State.ballVelX', index=0,
-      number=1, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='ballVelY', full_name='message.Message.State.ballVelY', index=1,
-      number=2, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='playerVelX', full_name='message.Message.State.playerVelX', index=2,
-      number=3, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='playerVelY', full_name='message.Message.State.playerVelY', index=3,
-      number=4, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='distance', full_name='message.Message.State.distance', index=4,
-      number=5, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='angleToBall', full_name='message.Message.State.angleToBall', index=5,
-      number=6, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto2',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=170,
-  serialized_end=292,
-)
 
-_MESSAGE_CONFIG = _descriptor.Descriptor(
+_CONFIG = _descriptor.Descriptor(
   name='Config',
-  full_name='message.Message.Config',
+  full_name='message.Config',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='isTraining', full_name='message.Message.Config.isTraining', index=0,
+      name='isTraining', full_name='message.Config.isTraining', index=0,
       number=1, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
@@ -138,37 +83,104 @@ _MESSAGE_CONFIG = _descriptor.Descriptor(
   ],
   serialized_options=None,
   is_extendable=False,
-  syntax='proto2',
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=294,
-  serialized_end=322,
+  serialized_start=26,
+  serialized_end=54,
 )
 
-_MESSAGE_REQUEST = _descriptor.Descriptor(
-  name='Request',
-  full_name='message.Message.Request',
+
+_STATE = _descriptor.Descriptor(
+  name='State',
+  full_name='message.State',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='state', full_name='message.Message.Request.state', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
+      name='ballVelX', full_name='message.State.ballVelX', index=0,
+      number=1, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='target', full_name='message.Message.Request.target', index=1,
+      name='ballVelY', full_name='message.State.ballVelY', index=1,
       number=2, type=1, cpp_type=5, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='config', full_name='message.Message.Request.config', index=2,
+      name='playerVelX', full_name='message.State.playerVelX', index=2,
+      number=3, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='playerVelY', full_name='message.State.playerVelY', index=3,
+      number=4, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='distance', full_name='message.State.distance', index=4,
+      number=5, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='angleToBall', full_name='message.State.angleToBall', index=5,
+      number=6, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=56,
+  serialized_end=178,
+)
+
+
+_REQUEST = _descriptor.Descriptor(
+  name='Request',
+  full_name='message.Request',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='state', full_name='message.Request.state', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='target', full_name='message.Request.target', index=1,
+      number=2, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='config', full_name='message.Request.config', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -182,23 +194,24 @@ _MESSAGE_REQUEST = _descriptor.Descriptor(
   ],
   serialized_options=None,
   is_extendable=False,
-  syntax='proto2',
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=324,
-  serialized_end=429,
+  serialized_start=180,
+  serialized_end=269,
 )
 
-_MESSAGE_RESPONSE = _descriptor.Descriptor(
+
+_RESPONSE = _descriptor.Descriptor(
   name='Response',
-  full_name='message.Message.Response',
+  full_name='message.Response',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='value', full_name='message.Message.Response.value', index=0,
+      name='value', full_name='message.Response.value', index=0,
       number=1, type=1, cpp_type=5, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
@@ -212,13 +225,14 @@ _MESSAGE_RESPONSE = _descriptor.Descriptor(
   ],
   serialized_options=None,
   is_extendable=False,
-  syntax='proto2',
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=431,
-  serialized_end=456,
+  serialized_start=271,
+  serialized_end=296,
 )
+
 
 _MESSAGE = _descriptor.Descriptor(
   name='Message',
@@ -230,7 +244,7 @@ _MESSAGE = _descriptor.Descriptor(
     _descriptor.FieldDescriptor(
       name='type', full_name='message.Message.type', index=0,
       number=1, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
@@ -248,74 +262,76 @@ _MESSAGE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='endConnection', full_name='message.Message.endConnection', index=3,
+      number=4, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
-  nested_types=[_MESSAGE_STATE, _MESSAGE_CONFIG, _MESSAGE_REQUEST, _MESSAGE_RESPONSE, ],
+  nested_types=[],
   enum_types=[
-    _MESSAGE_MESSAGETYPE,
   ],
   serialized_options=None,
   is_extendable=False,
-  syntax='proto2',
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=27,
-  serialized_end=508,
+  serialized_start=299,
+  serialized_end=439,
 )
 
-_MESSAGE_STATE.containing_type = _MESSAGE
-_MESSAGE_CONFIG.containing_type = _MESSAGE
-_MESSAGE_REQUEST.fields_by_name['state'].message_type = _MESSAGE_STATE
-_MESSAGE_REQUEST.fields_by_name['config'].message_type = _MESSAGE_CONFIG
-_MESSAGE_REQUEST.containing_type = _MESSAGE
-_MESSAGE_RESPONSE.containing_type = _MESSAGE
-_MESSAGE.fields_by_name['type'].enum_type = _MESSAGE_MESSAGETYPE
-_MESSAGE.fields_by_name['request'].message_type = _MESSAGE_REQUEST
-_MESSAGE.fields_by_name['response'].message_type = _MESSAGE_RESPONSE
-_MESSAGE_MESSAGETYPE.containing_type = _MESSAGE
+_REQUEST.fields_by_name['state'].message_type = _STATE
+_REQUEST.fields_by_name['config'].message_type = _CONFIG
+_MESSAGE.fields_by_name['type'].enum_type = _MESSAGETYPE
+_MESSAGE.fields_by_name['request'].message_type = _REQUEST
+_MESSAGE.fields_by_name['response'].message_type = _RESPONSE
+DESCRIPTOR.message_types_by_name['Config'] = _CONFIG
+DESCRIPTOR.message_types_by_name['State'] = _STATE
+DESCRIPTOR.message_types_by_name['Request'] = _REQUEST
+DESCRIPTOR.message_types_by_name['Response'] = _RESPONSE
 DESCRIPTOR.message_types_by_name['Message'] = _MESSAGE
+DESCRIPTOR.enum_types_by_name['MessageType'] = _MESSAGETYPE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
+Config = _reflection.GeneratedProtocolMessageType('Config', (_message.Message,), dict(
+  DESCRIPTOR = _CONFIG,
+  __module__ = 'message_pb2'
+  # @@protoc_insertion_point(class_scope:message.Config)
+  ))
+_sym_db.RegisterMessage(Config)
+
+State = _reflection.GeneratedProtocolMessageType('State', (_message.Message,), dict(
+  DESCRIPTOR = _STATE,
+  __module__ = 'message_pb2'
+  # @@protoc_insertion_point(class_scope:message.State)
+  ))
+_sym_db.RegisterMessage(State)
+
+Request = _reflection.GeneratedProtocolMessageType('Request', (_message.Message,), dict(
+  DESCRIPTOR = _REQUEST,
+  __module__ = 'message_pb2'
+  # @@protoc_insertion_point(class_scope:message.Request)
+  ))
+_sym_db.RegisterMessage(Request)
+
+Response = _reflection.GeneratedProtocolMessageType('Response', (_message.Message,), dict(
+  DESCRIPTOR = _RESPONSE,
+  __module__ = 'message_pb2'
+  # @@protoc_insertion_point(class_scope:message.Response)
+  ))
+_sym_db.RegisterMessage(Response)
+
 Message = _reflection.GeneratedProtocolMessageType('Message', (_message.Message,), dict(
-
-  State = _reflection.GeneratedProtocolMessageType('State', (_message.Message,), dict(
-    DESCRIPTOR = _MESSAGE_STATE,
-    __module__ = 'message_pb2'
-    # @@protoc_insertion_point(class_scope:message.Message.State)
-    ))
-  ,
-
-  Config = _reflection.GeneratedProtocolMessageType('Config', (_message.Message,), dict(
-    DESCRIPTOR = _MESSAGE_CONFIG,
-    __module__ = 'message_pb2'
-    # @@protoc_insertion_point(class_scope:message.Message.Config)
-    ))
-  ,
-
-  Request = _reflection.GeneratedProtocolMessageType('Request', (_message.Message,), dict(
-    DESCRIPTOR = _MESSAGE_REQUEST,
-    __module__ = 'message_pb2'
-    # @@protoc_insertion_point(class_scope:message.Message.Request)
-    ))
-  ,
-
-  Response = _reflection.GeneratedProtocolMessageType('Response', (_message.Message,), dict(
-    DESCRIPTOR = _MESSAGE_RESPONSE,
-    __module__ = 'message_pb2'
-    # @@protoc_insertion_point(class_scope:message.Message.Response)
-    ))
-  ,
   DESCRIPTOR = _MESSAGE,
   __module__ = 'message_pb2'
   # @@protoc_insertion_point(class_scope:message.Message)
   ))
 _sym_db.RegisterMessage(Message)
-_sym_db.RegisterMessage(Message.State)
-_sym_db.RegisterMessage(Message.Config)
-_sym_db.RegisterMessage(Message.Request)
-_sym_db.RegisterMessage(Message.Response)
 
 
 # @@protoc_insertion_point(module_scope)
