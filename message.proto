@@ -15,21 +15,25 @@ message State {
     double angleToBall = 6;
 }
 
-message Request {
+message Experience{
     State state = 1;
-    double target = 2;
+    double target = 2; // when learning target needs to be set
+}
+
+message Request {
+    repeated Experience experiences = 1;
     Config config = 3;
 }
 
 message Response {
-    double value = 1;
+    repeated double values = 1;
 }
 
 enum MessageType {
     GETVALUE = 0;
     LEARN = 1;
     CONFIG = 2;
-    RESPONSE = 4;
+    RESPONSE = 3;
 }
 
 message Message {

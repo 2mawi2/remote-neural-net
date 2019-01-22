@@ -25,7 +25,6 @@ class NeuralNetwork:
 
     def _update_target_model(self):
         self.target_model_counter += 1
-        # we update the target model after a batch
         if self.target_model_counter > self.target_model_update_frequency:
             self.target_model.set_weights(self.model.get_weights())
             self.target_model_counter = 0
@@ -35,7 +34,6 @@ class NeuralNetwork:
             Dense(12, activation="relu", input_dim=6),
             Dense(12, activation="relu"),
             Dense(12, activation="relu"),
-            # Dense(18, activation="relu"),
             Dense(1, activation='linear'),
         ])
 
@@ -52,8 +50,7 @@ class NeuralNetwork:
     def learn(self, inp: NeuralNetworkInput, target: float):
         self.memory.append((inp, target))
 
-        if len(
-                self.memory) < self.sample_batch_size or not self.is_learning_mode:  # or self.batch_counter < self.sample_batch_size:
+        if len(self.memory) < self.sample_batch_size or not self.is_learning_mode:
             return
 
         sample_batch = random.sample(self.memory, self.sample_batch_size)
@@ -62,5 +59,5 @@ class NeuralNetwork:
         self.model.fit(x_train, y_train, epochs=1, batch_size=len(sample_batch))  # , callbacks=[self.tensorboard])
         self._update_target_model()
 
-    def get_value(self, inp: NeuralNetworkInput):
-        return self.target_model.predict(np.array([inp.get_state()]))[0][0]
+    def get_value(self, inputs: [NeuralNetworkInput]):
+        return self.target_model.predict(np.array([i.get_state() for i in inputs]))[0]

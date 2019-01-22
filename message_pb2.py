@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='message',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\rmessage.proto\x12\x07message\"\x1c\n\x06\x43onfig\x12\x12\n\nisTraining\x18\x01 \x01(\x08\"z\n\x05State\x12\x10\n\x08\x62\x61llVelX\x18\x01 \x01(\x01\x12\x10\n\x08\x62\x61llVelY\x18\x02 \x01(\x01\x12\x12\n\nplayerVelX\x18\x03 \x01(\x01\x12\x12\n\nplayerVelY\x18\x04 \x01(\x01\x12\x10\n\x08\x64istance\x18\x05 \x01(\x01\x12\x13\n\x0b\x61ngleToBall\x18\x06 \x01(\x01\"Y\n\x07Request\x12\x1d\n\x05state\x18\x01 \x01(\x0b\x32\x0e.message.State\x12\x0e\n\x06target\x18\x02 \x01(\x01\x12\x1f\n\x06\x63onfig\x18\x03 \x01(\x0b\x32\x0f.message.Config\"\x19\n\x08Response\x12\r\n\x05value\x18\x01 \x01(\x01\"\x8c\x01\n\x07Message\x12\"\n\x04type\x18\x01 \x01(\x0e\x32\x14.message.MessageType\x12!\n\x07request\x18\x02 \x01(\x0b\x32\x10.message.Request\x12#\n\x08response\x18\x03 \x01(\x0b\x32\x11.message.Response\x12\x15\n\rendConnection\x18\x04 \x01(\x08*@\n\x0bMessageType\x12\x0c\n\x08GETVALUE\x10\x00\x12\t\n\x05LEARN\x10\x01\x12\n\n\x06\x43ONFIG\x10\x02\x12\x0c\n\x08RESPONSE\x10\x04\x62\x06proto3')
+  serialized_pb=_b('\n\rmessage.proto\x12\x07message\"\x1c\n\x06\x43onfig\x12\x12\n\nisTraining\x18\x01 \x01(\x08\"z\n\x05State\x12\x10\n\x08\x62\x61llVelX\x18\x01 \x01(\x01\x12\x10\n\x08\x62\x61llVelY\x18\x02 \x01(\x01\x12\x12\n\nplayerVelX\x18\x03 \x01(\x01\x12\x12\n\nplayerVelY\x18\x04 \x01(\x01\x12\x10\n\x08\x64istance\x18\x05 \x01(\x01\x12\x13\n\x0b\x61ngleToBall\x18\x06 \x01(\x01\";\n\nExperience\x12\x1d\n\x05state\x18\x01 \x01(\x0b\x32\x0e.message.State\x12\x0e\n\x06target\x18\x02 \x01(\x01\"T\n\x07Request\x12(\n\x0b\x65xperiences\x18\x01 \x03(\x0b\x32\x13.message.Experience\x12\x1f\n\x06\x63onfig\x18\x03 \x01(\x0b\x32\x0f.message.Config\"\x1a\n\x08Response\x12\x0e\n\x06values\x18\x01 \x03(\x01\"\x8c\x01\n\x07Message\x12\"\n\x04type\x18\x01 \x01(\x0e\x32\x14.message.MessageType\x12!\n\x07request\x18\x02 \x01(\x0b\x32\x10.message.Request\x12#\n\x08response\x18\x03 \x01(\x0b\x32\x11.message.Response\x12\x15\n\rendConnection\x18\x04 \x01(\x08*@\n\x0bMessageType\x12\x0c\n\x08GETVALUE\x10\x00\x12\t\n\x05LEARN\x10\x01\x12\n\n\x06\x43ONFIG\x10\x02\x12\x0c\n\x08RESPONSE\x10\x03\x62\x06proto3')
 )
 
 _MESSAGETYPE = _descriptor.EnumDescriptor(
@@ -42,14 +42,14 @@ _MESSAGETYPE = _descriptor.EnumDescriptor(
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='RESPONSE', index=3, number=4,
+      name='RESPONSE', index=3, number=3,
       serialized_options=None,
       type=None),
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=441,
-  serialized_end=505,
+  serialized_start=498,
+  serialized_end=562,
 )
 _sym_db.RegisterEnumDescriptor(_MESSAGETYPE)
 
@@ -57,7 +57,7 @@ MessageType = enum_type_wrapper.EnumTypeWrapper(_MESSAGETYPE)
 GETVALUE = 0
 LEARN = 1
 CONFIG = 2
-RESPONSE = 4
+RESPONSE = 3
 
 
 
@@ -158,6 +158,44 @@ _STATE = _descriptor.Descriptor(
 )
 
 
+_EXPERIENCE = _descriptor.Descriptor(
+  name='Experience',
+  full_name='message.Experience',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='state', full_name='message.Experience.state', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='target', full_name='message.Experience.target', index=1,
+      number=2, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=180,
+  serialized_end=239,
+)
+
+
 _REQUEST = _descriptor.Descriptor(
   name='Request',
   full_name='message.Request',
@@ -166,21 +204,14 @@ _REQUEST = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='state', full_name='message.Request.state', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
+      name='experiences', full_name='message.Request.experiences', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='target', full_name='message.Request.target', index=1,
-      number=2, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='config', full_name='message.Request.config', index=2,
+      name='config', full_name='message.Request.config', index=1,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -198,8 +229,8 @@ _REQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=180,
-  serialized_end=269,
+  serialized_start=241,
+  serialized_end=325,
 )
 
 
@@ -211,9 +242,9 @@ _RESPONSE = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='value', full_name='message.Response.value', index=0,
-      number=1, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
+      name='values', full_name='message.Response.values', index=0,
+      number=1, type=1, cpp_type=5, label=3,
+      has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
@@ -229,8 +260,8 @@ _RESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=271,
-  serialized_end=296,
+  serialized_start=327,
+  serialized_end=353,
 )
 
 
@@ -281,17 +312,19 @@ _MESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=299,
-  serialized_end=439,
+  serialized_start=356,
+  serialized_end=496,
 )
 
-_REQUEST.fields_by_name['state'].message_type = _STATE
+_EXPERIENCE.fields_by_name['state'].message_type = _STATE
+_REQUEST.fields_by_name['experiences'].message_type = _EXPERIENCE
 _REQUEST.fields_by_name['config'].message_type = _CONFIG
 _MESSAGE.fields_by_name['type'].enum_type = _MESSAGETYPE
 _MESSAGE.fields_by_name['request'].message_type = _REQUEST
 _MESSAGE.fields_by_name['response'].message_type = _RESPONSE
 DESCRIPTOR.message_types_by_name['Config'] = _CONFIG
 DESCRIPTOR.message_types_by_name['State'] = _STATE
+DESCRIPTOR.message_types_by_name['Experience'] = _EXPERIENCE
 DESCRIPTOR.message_types_by_name['Request'] = _REQUEST
 DESCRIPTOR.message_types_by_name['Response'] = _RESPONSE
 DESCRIPTOR.message_types_by_name['Message'] = _MESSAGE
@@ -311,6 +344,13 @@ State = _reflection.GeneratedProtocolMessageType('State', (_message.Message,), d
   # @@protoc_insertion_point(class_scope:message.State)
   ))
 _sym_db.RegisterMessage(State)
+
+Experience = _reflection.GeneratedProtocolMessageType('Experience', (_message.Message,), dict(
+  DESCRIPTOR = _EXPERIENCE,
+  __module__ = 'message_pb2'
+  # @@protoc_insertion_point(class_scope:message.Experience)
+  ))
+_sym_db.RegisterMessage(Experience)
 
 Request = _reflection.GeneratedProtocolMessageType('Request', (_message.Message,), dict(
   DESCRIPTOR = _REQUEST,
