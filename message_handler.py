@@ -21,7 +21,7 @@ class MessageHandler:
             m.response.values.extend(values)
         elif m.type is CONFIG:
             print(f"setting learning mode to: {m.request.config.isTraining}")
-            self.nn.is_learning_mode = m.request.config.isTraining
+            self.nn.set_learning_mode(m.request.config.isTraining)
             m.Clear()
 
         m.type = RESPONSE  # this is important since the client cannot handle empty payloads

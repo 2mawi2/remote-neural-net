@@ -12,9 +12,9 @@ import numpy as np
 class NeuralNetwork:
     def __init__(self):
         self.weight_backup = "weights.h5"
-        self.is_learning_mode = True
+        self._is_learning_mode = True
         self.learning_rate = 0.01
-        self.memory = deque(maxlen=2056)
+        self.memory = deque(maxlen=512)
         self.sample_batch_size = 32
         self.model = self._build_model()
         self.target_model = self._build_model()  # we use a separate target network
@@ -31,18 +31,19 @@ class NeuralNetwork:
 
     def _build_model(self):
         model = Sequential([
-            Dense(24, activation="relu", input_dim=6),
-            Dense(24, activation="relu"),
-            Dense(24, activation="relu"),
-            # Dense(24, activation="relu"),            Dense(1, activation='linear'),
+            Dense(12, activation="relu", input_dim=6),
+            Dense(12, activation="relu"),
+            Dense(12, activation="relu"),
+            Dense(1, activation='linear'),
         ])
         model.compile(loss='mse', optimizer=Adam(lr=self.learning_rate), metrics=['acc'])
-
-        if not self.is_learning_mode:
-            print("loading weight backup...")
-            model.load_weights(self.weight_backup)
-
+        self.load_weights()
         return model
+
+    def load_weights(self):
+        if not self._is_learning_mode:
+            print("loading weight backup...")
+            self.model.load_weights(self.weight_backup)
 
     def save_model(self):
         self.target_model.save(self.weight_backup)
@@ -50,7 +51,7 @@ class NeuralNetwork:
     def learn(self, inp: NeuralNetworkInput, target: float):
         self.memory.append((inp, target))
 
-        if len(self.memory) < self.sample_batch_size or not self.is_learning_mode:
+        if len(self.memory) < self.sample_batch_size or not self._is_learning_mode:
             return
 
         sample_batch = random.sample(self.memory, self.sample_batch_size)
@@ -61,3 +62,7 @@ class NeuralNetwork:
 
     def get_values(self, inputs: [NeuralNetworkInput]):
         return self.target_model.predict(np.array([i.get_state() for i in inputs])).flatten()
+
+    def set_learning_mode(self, isTraining):
+        self._is_learning_mode = isTraining
+        self.load_weights()
