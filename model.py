@@ -34,6 +34,6 @@ class NeuralNetworkInput:
         i.distance = state.distance
         i.player_vel_y = state.playerVelY
         i.player_vel_x = state.playerVelX
-        i.ball_vel_y = state.ballVelX
-        i.ball_vel_x = state.ballVelY
+        i.ball_vel_x = state.ballVelX
+        i.ball_vel_y = state.ballVelY
         return i
