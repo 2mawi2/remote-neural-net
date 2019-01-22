@@ -57,8 +57,25 @@ class tcp_server:
                 break
             sz = int(data_hdr)
 
-            data = self.conn.recv(sz)
-            self.message.ParseFromString(data)
+            chunks= []
+            bytes_recv = 0
+            while bytes_recv < sz:
+                chunk = self.conn.recv(min(sz - bytes_recv, 65_535))
+                if chunk == '':
+                    raise RuntimeError("socket connection broken")
+                chunks.append(chunk)
+                bytes_recv += len(chunk)
+            data = b''.join(chunks)
+
+            if sz != len(data):
+                print(f"header size: {sz} , actual size: {len(data)}")
+                break
+
+            try:
+                self.message.ParseFromString(data)
+            except:
+                print(f"header size: {sz} , actual size: {len(data)}")
+
             self.connection = not self.message.endConnection
             self.data_m.endConnection = False
 
@@ -66,6 +83,7 @@ class tcp_server:
             s = self.data_m.SerializeToString()
             total_len = 4 + self.data_m.ByteSize()
             self.conn.sendall(bytes(str(total_len).zfill(4), "utf-8") + s)
+            time.sleep(0.001)
 
         print("Closing socket ...")
         self.conn.close()
@@ -78,4 +96,6 @@ if __name__ == '__main__':
         client.run()
     except Exception as e:
         print(f"server process ended. Reason: {str(e)}")
+    finally:
+        print(f"saving model...")
         nn.save_model()

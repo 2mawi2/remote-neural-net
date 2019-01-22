@@ -13,8 +13,8 @@ class NeuralNetwork:
     def __init__(self):
         self.weight_backup = "weights.h5"
         self.is_learning_mode = True
-        self.learning_rate = 0.1
-        self.memory = deque(maxlen=1024)  # buffer for memory replay
+        self.learning_rate = 0.01
+        self.memory = deque(maxlen=2056)
         self.sample_batch_size = 32
         self.model = self._build_model()
         self.target_model = self._build_model()  # we use a separate target network
@@ -30,16 +30,16 @@ class NeuralNetwork:
             self.target_model_counter = 0
 
     def _build_model(self):
-        model = Sequential([  # 6 - 12 - 1
-            Dense(12, activation="relu", input_dim=6),
-            Dense(12, activation="relu"),
-            Dense(12, activation="relu"),
+        model = Sequential([
+            Dense(18, activation="relu", input_dim=6),
+            Dense(18, activation="relu"),
+            Dense(18, activation="relu"),
             Dense(1, activation='linear'),
         ])
-
         model.compile(loss='mse', optimizer=Adam(lr=self.learning_rate), metrics=['acc'])
 
         if not self.is_learning_mode:
+            print("loading weight backup...")
             model.load_weights(self.weight_backup)
 
         return model

@@ -20,6 +20,7 @@ class MessageHandler:
             m.Clear()
             m.response.values.extend(values)
         elif m.type is CONFIG:
+            print(f"setting learning mode to: {m.request.config.isTraining}")
             self.nn.is_learning_mode = m.request.config.isTraining
             m.Clear()
 
