@@ -76,5 +76,6 @@ if __name__ == '__main__':
 
     try:
         client.run()
-    except:
+    except Exception as e:
+        print(f"server process ended. Reason: {str(e)}")
         nn.save_model()

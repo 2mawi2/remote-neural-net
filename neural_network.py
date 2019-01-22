@@ -59,5 +59,5 @@ class NeuralNetwork:
         self.model.fit(x_train, y_train, epochs=1, batch_size=len(sample_batch))  # , callbacks=[self.tensorboard])
         self._update_target_model()
 
-    def get_value(self, inputs: [NeuralNetworkInput]):
-        return self.target_model.predict(np.array([i.get_state() for i in inputs]))[0]
+    def get_values(self, inputs: [NeuralNetworkInput]):
+        return self.target_model.predict(np.array([i.get_state() for i in inputs])).flatten()

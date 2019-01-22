@@ -15,10 +15,10 @@ class MessageHandler:
                 self.nn.learn(NeuralNetworkInput.from_proto(experience.state), experience.target)
             m.Clear()
         elif m.type is GETVALUE:
-            state = NeuralNetworkInput.from_proto(m.request.state)
-            value = self.nn.get_value(state)
+            states = [NeuralNetworkInput.from_proto(experience.state) for experience in m.request.experiences]
+            values = self.nn.get_values(states)
             m.Clear()
-            m.response.value = value
+            m.response.values.extend(values)
         elif m.type is CONFIG:
             self.nn.is_learning_mode = m.request.config.isTraining
             m.Clear()
