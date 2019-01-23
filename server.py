@@ -43,9 +43,12 @@ class tcp_server:
         print("Agent connected")
 
     def signal_handler(self, signal, frame):
+        print(f"saving model...")
+        nn.save_model()
         print("SIGINT caught, exiting ...")
         if self.connection:
             self.connection = False
+        self.conn.close()
 
     def run(self):
         while self.connection:

@@ -13,11 +13,14 @@ class NeuralNetwork:
     def __init__(self):
         self.weight_backup = "weights.h5"
         self._is_learning_mode = True
-        self.learning_rate = 0.01
-        self.memory = deque(maxlen=512)
+        self.learning_rate = 0.001
+        self.memory = deque(maxlen=2056)
         self.sample_batch_size = 32
         self.model = self._build_model()
         self.target_model = self._build_model()  # we use a separate target network
+
+        self.load_weights()
+
         self.target_model_counter = 0
         self.target_model_update_frequency = 10
         # self.tensorboard = TensorBoard(log_dir='./Graph', histogram_freq=0,
@@ -31,22 +34,23 @@ class NeuralNetwork:
 
     def _build_model(self):
         model = Sequential([
-            Dense(12, activation="relu", input_dim=6),
-            Dense(12, activation="relu"),
+            Dense(24, activation="relu", input_dim=6),
+            Dense(18, activation="relu"),
             Dense(12, activation="relu"),
             Dense(1, activation='linear'),
         ])
         model.compile(loss='mse', optimizer=Adam(lr=self.learning_rate), metrics=['acc'])
-        self.load_weights()
         return model
 
     def load_weights(self):
         if not self._is_learning_mode:
             print("loading weight backup...")
             self.model.load_weights(self.weight_backup)
+            self.target_model.load_weights(self.weight_backup)
 
     def save_model(self):
-        self.target_model.save(self.weight_backup)
+        if self._is_learning_mode:
+            self.target_model.save(self.weight_backup)
 
     def learn(self, inp: NeuralNetworkInput, target: float):
         self.memory.append((inp, target))
@@ -61,7 +65,9 @@ class NeuralNetwork:
         self._update_target_model()
 
     def get_values(self, inputs: [NeuralNetworkInput]):
-        return self.target_model.predict(np.array([i.get_state() for i in inputs])).flatten()
+        states = np.array([i.get_state() for i in inputs])
+        values = self.target_model.predict(states).flatten()
+        return values
 
     def set_learning_mode(self, isTraining):
         self._is_learning_mode = isTraining
