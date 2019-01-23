@@ -1,39 +1,54 @@
+import numpy as np
+
+
 class NeuralNetworkInput:
-    ang_to_ball: float
-    distance: float
-    player_vel_y: float
-    player_vel_x: float
-    ball_vel_y: float
-    ball_vel_x: float
+    ballVelX: float
+    ballVelY: float
+    distanceDefenderAttacker: float
+    distanceGoalBall: float
+    distanceBallAttacker: float
+    defenderVelX: float
+    defenderVelY: float
+    attackerVelX: float
+    attackerVelY: float
+    attackerAngleToBall: float
+    defenderAngleToBall: float
+    strategicAngle: float
 
     def get_state(self) -> [float]:
         return [
-            self.ball_vel_x,
-            self.ball_vel_y,
-            self.player_vel_x,
-            self.player_vel_y,
-            self.distance,
-            self.ang_to_ball,
+            self.ballVelX,
+            self.ballVelY,
+            self.distanceDefenderAttacker,
+            self.distanceGoalBall,
+            self.distanceBallAttacker,
+            self.defenderVelX,
+            self.defenderVelY,
+            self.attackerVelX,
+            self.attackerVelY,
+            self.attackerAngleToBall,
+            self.defenderAngleToBall,
+            self.strategicAngle,
         ]
 
     def __eq__(self, o: object) -> bool:
         if isinstance(o, NeuralNetworkInput) is False:
             return False
-
-        return self.ball_vel_x == o.ball_vel_x \
-               and self.ball_vel_y == o.ball_vel_y \
-               and self.player_vel_x == o.player_vel_x \
-               and self.player_vel_y == o.player_vel_y \
-               and self.distance == o.distance \
-               and self.ang_to_ball == o.ang_to_ball
+        return np.array_equal(self.get_state(), o.get_state())
 
     @staticmethod
     def from_proto(state):
         i = NeuralNetworkInput()
-        i.ang_to_ball = state.angleToBall
-        i.distance = state.distance
-        i.player_vel_y = state.playerVelY
-        i.player_vel_x = state.playerVelX
-        i.ball_vel_x = state.ballVelX
-        i.ball_vel_y = state.ballVelY
+        i.ballVelX = state.ballVelX
+        i.ballVelY = state.ballVelY
+        i.distanceDefenderAttacker = state.distanceDefenderAttacker
+        i.distanceGoalBall = state.distanceGoalBall
+        i.distanceBallAttacker = state.distanceBallAttacker
+        i.defenderVelX = state.defenderVelX
+        i.defenderVelY = state.defenderVelY
+        i.attackerVelX = state.attackerVelX
+        i.attackerVelY = state.attackerVelY
+        i.attackerAngleToBall = state.attackerAngleToBall
+        i.defenderAngleToBall = state.defenderAngleToBall
+        i.strategicAngle = state.strategicAngle
         return i

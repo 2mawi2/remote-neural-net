@@ -53,8 +53,8 @@ class tcp_server:
     def run(self):
         while self.connection:
 
-            # Listen for client request with 4 characters header
-            data_hdr = self.conn.recv(4)
+            # Listen for client request with 5 characters header
+            data_hdr = self.conn.recv(5)
 
             if not data_hdr:
                 break
@@ -84,8 +84,8 @@ class tcp_server:
 
             self.data_m = message_handler.on_message(self.message)
             s = self.data_m.SerializeToString()
-            total_len = 4 + self.data_m.ByteSize()
-            self.conn.sendall(bytes(str(total_len).zfill(4), "utf-8") + s)
+            total_len = 5 + self.data_m.ByteSize()
+            self.conn.sendall(bytes(str(total_len).zfill(5), "utf-8") + s)
             time.sleep(0.001)
 
         print("Closing socket ...")
