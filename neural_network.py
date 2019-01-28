@@ -34,10 +34,10 @@ class NeuralNetwork:
 
     def _build_model(self):
         model = Sequential([
-            Dense(14, activation="relu", input_dim=14),
-            Dense(14, activation="relu"),
-            Dense(14, activation="relu"),
-            Dense(14, activation="relu"),
+            Dense(28, activation="relu", input_dim=14),
+            Dense(28, activation="relu"),
+            Dense(28, activation="relu"),
+            Dense(28, activation="relu"),
             Dense(1, activation='linear'),
         ])
         model.compile(loss='mse', optimizer=Adam(lr=self.learning_rate), metrics=['acc'])
