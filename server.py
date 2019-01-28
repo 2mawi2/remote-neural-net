@@ -1,14 +1,5 @@
 #!/usr/bin/env python
 
-'''
-This is a small TCP server that handles a protobuf communication example.
-When a connection is established, the server will:
-	- Wait for a client request to be sent
-	- Reply with a protobuf message back with dummy XYZ positions of an object
-The server will loop until either CTRL+C is pressed (in which case it will cleanly close the socket and exit), or until the client request includes an endConnection=True message
-The current version has a small bug making it receive corrupted messages after a few loops. It will be fixed later.
-'''
-
 import socket
 import struct
 import signal
