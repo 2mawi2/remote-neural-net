@@ -2,33 +2,41 @@ import numpy as np
 
 
 class NeuralNetworkInput:
-    ballVelX: float
-    ballVelY: float
-    distanceDefenderAttacker: float
-    distanceGoalBall: float
-    distanceBallAttacker: float
-    defenderVelX: float
-    defenderVelY: float
-    attackerVelX: float
-    attackerVelY: float
-    attackerAngleToBall: float
-    defenderAngleToBall: float
-    strategicAngle: float
+    angleBallGoal: float
+    angleAttackerBall: float
+    angleDefenderBall: float
+    angleAttacker: float
+    angleDefender: float
+
+    distanceBallGoal: float
+    distanceAttackerBall: float
+    distanceDefenderBall: float
+
+    velAttackerX: float
+    velAttackerY: float
+    velDefenderX: float
+    velDefenderY: float
+    velBallX: float
+    velBallY: float
 
     def get_state(self) -> [float]:
         return [
-            self.ballVelX,
-            self.ballVelY,
-            self.distanceDefenderAttacker,
-            self.distanceGoalBall,
-            self.distanceBallAttacker,
-            self.defenderVelX,
-            self.defenderVelY,
-            self.attackerVelX,
-            self.attackerVelY,
-            self.attackerAngleToBall,
-            self.defenderAngleToBall,
-            self.strategicAngle,
+            self.angleBallGoal,
+            self.angleAttackerBall,
+            self.angleDefenderBall,
+            self.angleAttacker,
+            self.angleDefender,
+
+            self.distanceBallGoal,
+            self.distanceAttackerBall,
+            self.distanceDefenderBall,
+
+            self.velAttackerX,
+            self.velAttackerY,
+            self.velDefenderX,
+            self.velDefenderY,
+            self.velBallX,
+            self.velBallY,
         ]
 
     def __eq__(self, o: object) -> bool:
@@ -39,16 +47,20 @@ class NeuralNetworkInput:
     @staticmethod
     def from_proto(state):
         i = NeuralNetworkInput()
-        i.ballVelX = state.ballVelX
-        i.ballVelY = state.ballVelY
-        i.distanceDefenderAttacker = state.distanceDefenderAttacker
-        i.distanceGoalBall = state.distanceGoalBall
-        i.distanceBallAttacker = state.distanceBallAttacker
-        i.defenderVelX = state.defenderVelX
-        i.defenderVelY = state.defenderVelY
-        i.attackerVelX = state.attackerVelX
-        i.attackerVelY = state.attackerVelY
-        i.attackerAngleToBall = state.attackerAngleToBall
-        i.defenderAngleToBall = state.defenderAngleToBall
-        i.strategicAngle = state.strategicAngle
+        i.angleBallGoal = state.angleBallGoal
+        i.angleAttackerBall = state.angleAttackerBall
+        i.angleDefenderBall = state.angleDefenderBall
+        i.angleAttacker = state.angleAttacker
+        i.angleDefender = state.angleDefender
+
+        i.distanceBallGoal = state.distanceBallGoal
+        i.distanceAttackerBall = state.distanceAttackerBall
+        i.distanceDefenderBall = state.distanceDefenderBall
+
+        i.velAttackerX = state.velAttackerX
+        i.velAttackerY = state.velAttackerY
+        i.velDefenderX = state.velDefenderX
+        i.velDefenderY = state.velDefenderY
+        i.velBallX = state.velBallX
+        i.velBallY = state.velBallY
         return i

@@ -3,7 +3,7 @@ from collections import deque
 
 from model import NeuralNetworkInput
 from keras.models import Sequential
-from keras.layers import Dense, InputLayer
+from keras.layers import Dense, InputLayer, BatchNormalization
 from keras.optimizers import Adam, RMSprop
 # from keras.callbacks import TensorBoard
 import numpy as np
@@ -14,7 +14,7 @@ class NeuralNetwork:
         self.weight_backup = "weights.h5"
         self._is_learning_mode = True
         self.learning_rate = 0.001
-        self.memory = deque(maxlen=2056)
+        self.memory = deque(maxlen=1024)
         self.sample_batch_size = 32
         self.model = self._build_model()
         self.target_model = self._build_model()  # we use a separate target network
@@ -34,9 +34,10 @@ class NeuralNetwork:
 
     def _build_model(self):
         model = Sequential([
-            Dense(24, activation="relu", input_dim=12),
-            Dense(24, activation="relu"),
-            Dense(24, activation="relu"),
+            Dense(14, activation="relu", input_dim=14),
+            Dense(14, activation="relu"),
+            Dense(14, activation="relu"),
+            Dense(14, activation="relu"),
             Dense(1, activation='linear'),
         ])
         model.compile(loss='mse', optimizer=Adam(lr=self.learning_rate), metrics=['acc'])

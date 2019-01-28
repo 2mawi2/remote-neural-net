@@ -7,22 +7,27 @@ message Config {
 }
 
 message State {
-    double ballVelX = 1;
-    double ballVelY = 2;
-    double distanceDefenderAttacker = 3;
-    double distanceGoalBall = 4;
-    double distanceBallAttacker = 5;
-    double defenderVelX = 6;
-    double defenderVelY = 7;
-    double attackerVelX = 8;
-    double attackerVelY = 9;
-    double attackerAngleToBall = 10;
-    double defenderAngleToBall = 11;
-    double strategicAngle = 12;
+    double angleBallGoal = 1;
+    double angleAttackerBall = 2;
+    double angleDefenderBall = 3;
+    double angleAttacker = 4;
+    double angleDefender = 5;
+
+    double distanceBallGoal = 6;
+    double distanceAttackerBall = 7;
+    double distanceDefenderBall = 8;
+
+    double velAttackerX = 9;
+    double velAttackerY = 10;
+    double velDefenderX = 11;
+    double velDefenderY = 12;
+    double velBallX = 13;
+    double velBallY = 14;
 }
 
 message Experience {
-    State state = 1;    double target = 2; // when learning target needs to be set
+    State state = 1;
+    double target = 2; // when learning target needs to be set
 }
 
 message Request {

@@ -37,7 +37,7 @@ class tcp_server:
 
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.bind((tcp_ip, port))
-        self.socket.listen(1)
+        self.socket.listen(2)
         self.conn, self.addr = self.socket.accept()
         self.connection = True
         print("Agent connected")
@@ -60,7 +60,7 @@ class tcp_server:
                 break
             sz = int(data_hdr)
 
-            chunks= []
+            chunks = []
             bytes_recv = 0
             while bytes_recv < sz:
                 chunk = self.conn.recv(min(sz - bytes_recv, 65_535))
