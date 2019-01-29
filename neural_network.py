@@ -13,12 +13,11 @@ class NeuralNetwork:
     def __init__(self):
         self.weight_backup = "weights.h5"
         self._is_learning_mode = True
-        self.learning_rate = 0.001
-        self.memory = deque(maxlen=1024)
+        self.learning_rate = 0.0001
+        self.memory = deque(maxlen=2024)
         self.sample_batch_size = 32
         self.model = self._build_model()
         self.target_model = self._build_model()  # we use a separate target network
-
         self.load_weights()
 
         self.target_model_counter = 0
@@ -34,10 +33,8 @@ class NeuralNetwork:
 
     def _build_model(self):
         model = Sequential([
-            Dense(28, activation="relu", input_dim=14),
-            Dense(28, activation="relu"),
-            Dense(28, activation="relu"),
-            Dense(28, activation="relu"),
+            Dense(26, activation="relu", input_dim=13),
+            Dense(26, activation="relu"),
             Dense(1, activation='linear'),
         ])
         model.compile(loss='mse', optimizer=Adam(lr=self.learning_rate), metrics=['acc'])
