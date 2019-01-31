@@ -7,15 +7,15 @@ message Config {
 }
 
 message State {
-    double angleBallGoal = 1;
+    double angleAttackerGoal = 1;
     double angleAttackerBall = 2;
-    double angleDefenderBall = 3;
+    double angleAttackerDefender = 3;
     double angleAttacker = 4;
     double angleDefender = 5;
 
-    double distanceBallGoal = 6;
+    double distanceAttackerGoal = 6;
     double distanceAttackerBall = 7;
-    double distanceDefenderBall = 8;
+    double distanceAttackerDefender = 8;
 
     double velAttackerX = 9;
     double velAttackerY = 10;
@@ -27,7 +27,7 @@ message State {
 
 message Experience {
     State state = 1;
-    double target = 2; // when learning target needs to be set
+    double target = 2; // td1 precalculated target
 }
 
 message Request {

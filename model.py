@@ -2,15 +2,15 @@ import numpy as np
 
 
 class NeuralNetworkInput:
-    angleBallGoal: float
+    angleAttackerGoal: float
     angleAttackerBall: float
-    angleDefenderBall: float
+    angleAttackerDefender: float
     angleAttacker: float
     angleDefender: float
 
-    distanceBallGoal: float
+    distanceAttackerGoal: float
     distanceAttackerBall: float
-    distanceDefenderBall: float
+    distanceAttackerDefender: float
 
     velAttackerX: float
     velAttackerY: float
@@ -21,15 +21,15 @@ class NeuralNetworkInput:
 
     def get_state(self) -> [float]:
         return [
-            self.angleBallGoal,
+            self.angleAttackerGoal,
             self.angleAttackerBall,
-            self.angleDefenderBall,
+            self.angleAttackerDefender,
             self.angleAttacker,
             self.angleDefender,
 
-            self.distanceBallGoal,
+            self.distanceAttackerGoal,
             self.distanceAttackerBall,
-            self.distanceDefenderBall,
+            self.distanceAttackerDefender,
 
             self.velAttackerX,
             self.velAttackerY,
@@ -47,15 +47,15 @@ class NeuralNetworkInput:
     @staticmethod
     def from_proto(state):
         i = NeuralNetworkInput()
-        i.angleBallGoal = state.angleBallGoal
+        i.angleAttackerGoal = state.angleAttackerGoal
         i.angleAttackerBall = state.angleAttackerBall
-        i.angleDefenderBall = state.angleDefenderBall
+        i.angleAttackerDefender = state.angleAttackerDefender
         i.angleAttacker = state.angleAttacker
         i.angleDefender = state.angleDefender
 
-        i.distanceBallGoal = state.distanceBallGoal
+        i.distanceAttackerGoal = state.distanceAttackerGoal
         i.distanceAttackerBall = state.distanceAttackerBall
-        i.distanceDefenderBall = state.distanceDefenderBall
+        i.distanceAttackerDefender = state.distanceAttackerDefender
 
         i.velAttackerX = state.velAttackerX
         i.velAttackerY = state.velAttackerY

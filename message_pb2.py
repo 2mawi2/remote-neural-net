@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='message',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\rmessage.proto\x12\x07message\"\x1c\n\x06\x43onfig\x12\x12\n\nisTraining\x18\x01 \x01(\x08\"\xd4\x02\n\x05State\x12\x15\n\rangleBallGoal\x18\x01 \x01(\x01\x12\x19\n\x11\x61ngleAttackerBall\x18\x02 \x01(\x01\x12\x19\n\x11\x61ngleDefenderBall\x18\x03 \x01(\x01\x12\x15\n\rangleAttacker\x18\x04 \x01(\x01\x12\x15\n\rangleDefender\x18\x05 \x01(\x01\x12\x18\n\x10\x64istanceBallGoal\x18\x06 \x01(\x01\x12\x1c\n\x14\x64istanceAttackerBall\x18\x07 \x01(\x01\x12\x1c\n\x14\x64istanceDefenderBall\x18\x08 \x01(\x01\x12\x14\n\x0cvelAttackerX\x18\t \x01(\x01\x12\x14\n\x0cvelAttackerY\x18\n \x01(\x01\x12\x14\n\x0cvelDefenderX\x18\x0b \x01(\x01\x12\x14\n\x0cvelDefenderY\x18\x0c \x01(\x01\x12\x10\n\x08velBallX\x18\r \x01(\x01\x12\x10\n\x08velBallY\x18\x0e \x01(\x01\";\n\nExperience\x12\x1d\n\x05state\x18\x01 \x01(\x0b\x32\x0e.message.State\x12\x0e\n\x06target\x18\x02 \x01(\x01\"T\n\x07Request\x12(\n\x0b\x65xperiences\x18\x01 \x03(\x0b\x32\x13.message.Experience\x12\x1f\n\x06\x63onfig\x18\x03 \x01(\x0b\x32\x0f.message.Config\"\x1a\n\x08Response\x12\x0e\n\x06values\x18\x01 \x03(\x01\"\x8c\x01\n\x07Message\x12\"\n\x04type\x18\x01 \x01(\x0e\x32\x14.message.MessageType\x12!\n\x07request\x18\x02 \x01(\x0b\x32\x10.message.Request\x12#\n\x08response\x18\x03 \x01(\x0b\x32\x11.message.Response\x12\x15\n\rendConnection\x18\x04 \x01(\x08*@\n\x0bMessageType\x12\x0c\n\x08GETVALUE\x10\x00\x12\t\n\x05LEARN\x10\x01\x12\n\n\x06\x43ONFIG\x10\x02\x12\x0c\n\x08RESPONSE\x10\x03\x62\x06proto3')
+  serialized_pb=_b('\n\rmessage.proto\x12\x07message\"\x1c\n\x06\x43onfig\x12\x12\n\nisTraining\x18\x01 \x01(\x08\"\xe4\x02\n\x05State\x12\x19\n\x11\x61ngleAttackerGoal\x18\x01 \x01(\x01\x12\x19\n\x11\x61ngleAttackerBall\x18\x02 \x01(\x01\x12\x1d\n\x15\x61ngleAttackerDefender\x18\x03 \x01(\x01\x12\x15\n\rangleAttacker\x18\x04 \x01(\x01\x12\x15\n\rangleDefender\x18\x05 \x01(\x01\x12\x1c\n\x14\x64istanceAttackerGoal\x18\x06 \x01(\x01\x12\x1c\n\x14\x64istanceAttackerBall\x18\x07 \x01(\x01\x12 \n\x18\x64istanceAttackerDefender\x18\x08 \x01(\x01\x12\x14\n\x0cvelAttackerX\x18\t \x01(\x01\x12\x14\n\x0cvelAttackerY\x18\n \x01(\x01\x12\x14\n\x0cvelDefenderX\x18\x0b \x01(\x01\x12\x14\n\x0cvelDefenderY\x18\x0c \x01(\x01\x12\x10\n\x08velBallX\x18\r \x01(\x01\x12\x10\n\x08velBallY\x18\x0e \x01(\x01\";\n\nExperience\x12\x1d\n\x05state\x18\x01 \x01(\x0b\x32\x0e.message.State\x12\x0e\n\x06target\x18\x02 \x01(\x01\"T\n\x07Request\x12(\n\x0b\x65xperiences\x18\x01 \x03(\x0b\x32\x13.message.Experience\x12\x1f\n\x06\x63onfig\x18\x03 \x01(\x0b\x32\x0f.message.Config\"\x1a\n\x08Response\x12\x0e\n\x06values\x18\x01 \x03(\x01\"\x8c\x01\n\x07Message\x12\"\n\x04type\x18\x01 \x01(\x0e\x32\x14.message.MessageType\x12!\n\x07request\x18\x02 \x01(\x0b\x32\x10.message.Request\x12#\n\x08response\x18\x03 \x01(\x0b\x32\x11.message.Response\x12\x15\n\rendConnection\x18\x04 \x01(\x08*@\n\x0bMessageType\x12\x0c\n\x08GETVALUE\x10\x00\x12\t\n\x05LEARN\x10\x01\x12\n\n\x06\x43ONFIG\x10\x02\x12\x0c\n\x08RESPONSE\x10\x03\x62\x06proto3')
 )
 
 _MESSAGETYPE = _descriptor.EnumDescriptor(
@@ -48,8 +48,8 @@ _MESSAGETYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=717,
-  serialized_end=781,
+  serialized_start=733,
+  serialized_end=797,
 )
 _sym_db.RegisterEnumDescriptor(_MESSAGETYPE)
 
@@ -100,7 +100,7 @@ _STATE = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='angleBallGoal', full_name='message.State.angleBallGoal', index=0,
+      name='angleAttackerGoal', full_name='message.State.angleAttackerGoal', index=0,
       number=1, type=1, cpp_type=5, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
@@ -114,7 +114,7 @@ _STATE = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='angleDefenderBall', full_name='message.State.angleDefenderBall', index=2,
+      name='angleAttackerDefender', full_name='message.State.angleAttackerDefender', index=2,
       number=3, type=1, cpp_type=5, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
@@ -135,7 +135,7 @@ _STATE = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='distanceBallGoal', full_name='message.State.distanceBallGoal', index=5,
+      name='distanceAttackerGoal', full_name='message.State.distanceAttackerGoal', index=5,
       number=6, type=1, cpp_type=5, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
@@ -149,7 +149,7 @@ _STATE = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='distanceDefenderBall', full_name='message.State.distanceDefenderBall', index=7,
+      name='distanceAttackerDefender', full_name='message.State.distanceAttackerDefender', index=7,
       number=8, type=1, cpp_type=5, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
@@ -210,7 +210,7 @@ _STATE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=57,
-  serialized_end=397,
+  serialized_end=413,
 )
 
 
@@ -247,8 +247,8 @@ _EXPERIENCE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=399,
-  serialized_end=458,
+  serialized_start=415,
+  serialized_end=474,
 )
 
 
@@ -285,8 +285,8 @@ _REQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=460,
-  serialized_end=544,
+  serialized_start=476,
+  serialized_end=560,
 )
 
 
@@ -316,8 +316,8 @@ _RESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=546,
-  serialized_end=572,
+  serialized_start=562,
+  serialized_end=588,
 )
 
 
@@ -368,8 +368,8 @@ _MESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=575,
-  serialized_end=715,
+  serialized_start=591,
+  serialized_end=731,
 )
 
 _EXPERIENCE.fields_by_name['state'].message_type = _STATE
