@@ -25,7 +25,7 @@ class NeuralNetworkInput:
             self.angleAttackerBall,
             self.angleAttackerDefender,
             self.angleAttacker,
-            self.angleDefender,
+            # self.angleDefender,
 
             # self.distanceAttackerGoal,
             self.distanceAttackerBall,

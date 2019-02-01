@@ -16,7 +16,7 @@ class NeuralNetwork:
         self.weight_backup = "weights.h5"
         self._is_learning_mode = True
         self.learning_rate = 0.0025
-        self.memory = deque(maxlen=32)
+        self.memory = deque(maxlen=2056)
         self.sample_batch_size = 32
         # self.raising_batch = 1024
         self.model = self._build_model()
@@ -36,9 +36,9 @@ class NeuralNetwork:
 
     def _build_model(self):
         model = Sequential([
-            Dense(26, activation="relu", input_dim=13),
-            Dense(26, activation="relu"),
-            Dense(26, activation="relu"),
+            Dense(24, activation="relu", input_dim=12),
+            Dense(24, activation="relu"),
+            Dense(24, activation="relu"),
             Dense(1, activation='linear'),
         ])
         model.compile(loss='mse', optimizer=Adam(lr=self.learning_rate), metrics=['acc'])
