@@ -16,7 +16,7 @@ class NeuralNetwork:
         self.weight_backup = "weights.h5"
         self._is_learning_mode = True
         self.learning_rate = 0.0025
-        self.memory = deque(maxlen=32)
+        self.memory = deque(maxlen=512)
         self.sample_batch_size = 32
         # self.raising_batch = 1024
         self.model = self._build_model()
@@ -65,7 +65,7 @@ class NeuralNetwork:
         sample_batch = random.sample(self.memory, self.sample_batch_size)
         x_train = np.array([s.get_state() for s, _ in sample_batch])
         y_train = np.array([t for _, t in sample_batch])
-        self.model.fit(x_train, y_train, epochs=10, batch_size=len(sample_batch))  # , callbacks=[self.tensorboard])
+        self.model.fit(x_train, y_train, epochs=1, batch_size=len(sample_batch))  # , callbacks=[self.tensorboard])
         self._update_target_model()
 
         # self.sample_batch_size += self.raising_batch
