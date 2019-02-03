@@ -24,19 +24,19 @@ class NeuralNetworkInput:
             self.angleAttackerGoal,
             self.angleAttackerBall,
             self.angleAttackerDefender,
-            self.angleAttacker,
-            # self.angleDefender,
+            # self.angleAttacker,
+            self.angleDefender,
 
             # self.distanceAttackerGoal,
-            self.distanceAttackerBall,
+            # self.distanceAttackerBall,
             self.distanceAttackerDefender,
 
             self.velAttackerX,
             self.velAttackerY,
             self.velDefenderX,
             self.velDefenderY,
-            self.velBallX,
-            self.velBallY,
+            # self.velBallX,
+            # self.velBallY,
         ]
 
     def __eq__(self, o: object) -> bool:
