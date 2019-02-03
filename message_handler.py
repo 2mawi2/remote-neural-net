@@ -11,8 +11,7 @@ class MessageHandler:
     def on_message(self, m: Message) -> Message:
         # print("type: " + str(m.__str__()))
         if m.type is LEARN:
-            for experience in m.request.experiences:
-                self.nn.learn(NeuralNetworkInput.from_proto(experience.state), experience.target)
+            self.nn.learn(m.request.experiences)
             m.Clear()
         elif m.type is GETVALUE:
             states = [NeuralNetworkInput.from_proto(experience.state) for experience in m.request.experiences]
