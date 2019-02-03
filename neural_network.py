@@ -16,8 +16,9 @@ class NeuralNetwork:
         self.weight_backup = "weights.h5"
         self._is_learning_mode = True
         self.learning_rate = 0.0025
-        self.memory = deque(maxlen=1024)
+        self.memory = np.ndarray(shape=(0, 2))
         self.sample_batch_size = 32
+        self.max_replay_memory_size = 4_194_304
         # self.raising_batch = 1024
         self.model = self._build_model()
         self.target_model = self._build_model()  # we use a separate target network
@@ -38,6 +39,7 @@ class NeuralNetwork:
         model = Sequential([
             Dense(26, activation="relu", input_dim=13),
             Dense(26, activation="relu"),
+            Dense(26, activation="relu"),
             # Dense(26, activation="relu"),
             Dense(1, activation='linear'),
         ])
@@ -57,20 +59,33 @@ class NeuralNetwork:
 
     def learn(self, experiences):
         for e in experiences:
-            inp = NeuralNetworkInput.from_proto(e.state),
+            inp = NeuralNetworkInput.from_proto(e.state)
             target = e.target
-            if (inp, target) not in self.memory:
-                self.memory.append((inp, target))
+
+            # contains check really expensive
+            # if not np.all(np.any(np.isin(self.memory, [inp, target]), axis=0)):
+            if len(self.memory) > self.max_replay_memory_size:
+                self.memory = np.delete(self.memory, 0, axis=0)
+            self.memory = np.append(self.memory, [[inp, target]], axis=0)
 
         if len(self.memory) < self.sample_batch_size or not self._is_learning_mode:
             return
 
         for _ in range(5):
-            sample_batch = random.sample(self.memory, self.sample_batch_size)
-            x_train = np.array([s[0].get_state() for s, _ in sample_batch])
-            y_train = np.array([t for _, t in sample_batch])
-            self.model.fit(x_train, y_train, epochs=1, batch_size=len(sample_batch))  # , callbacks=[self.tensorboard])
+            idx = np.random.randint(len(self.memory), size=self.sample_batch_size)
+            mini_batch = self.memory[idx, :]
+            x_train = np.array([s[0].get_state() for s in mini_batch])
+            y_train = np.array([s[1] for s in mini_batch])
+            # sample_batch = random.sample(self.memory, self.sample_batch_size)
+            # x_train = np.array([s[0].get_state() for s, _ in sample_batch])
+            # y_train = np.array([t for _, t in sample_batch])
+
+            self.model.fit(x_train, y_train, epochs=1,
+                           batch_size=len(mini_batch))  # , callbacks=[self.tensorboard])
             self._update_target_model()
+
+        # sample_batch = random.sample(self.memory, self.sample_batch_size)
+
         # self.sample_batch_size += self.raising_batch
 
     def get_values(self, inputs: [NeuralNetworkInput]):

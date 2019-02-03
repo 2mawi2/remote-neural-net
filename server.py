@@ -29,7 +29,11 @@ class tcp_server:
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.bind((tcp_ip, port))
         self.socket.listen(2)
+
+
         self.conn, self.addr = self.socket.accept()
+
+
         self.connection = True
         print("Agent connected")
 
