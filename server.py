@@ -5,12 +5,13 @@ import struct
 import signal
 import time
 import socket
-from threading import Thread
+from threading import Thread, Lock
 
 from message_pb2 import *
 
 from message_handler import MessageHandler
 
+handler_lock = Lock()
 handler = MessageHandler.instance()  # threadsafe singleton
 keepAlive = True
 
@@ -43,7 +44,6 @@ class ClientThread(Thread):
                 chunks.append(chunk)
                 bytes_recv += len(chunk)
             data = b''.join(chunks)
-
             if sz != len(data):
                 print("HEADER SIZE DOES NOT MATCH")
                 print(f"header size: {sz} , actual size: {len(data)}")
@@ -59,8 +59,11 @@ class ClientThread(Thread):
 
             self.data_m.endConnection = False
 
+            global handler_lock
             global handler
-            self.data_m = handler.on_message(self.message)
+
+            with handler_lock:
+                self.data_m = handler.on_message(self.message)
 
             s = self.data_m.SerializeToString()
             total_len = 5 + self.data_m.ByteSize()
