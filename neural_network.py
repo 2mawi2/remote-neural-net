@@ -1,6 +1,6 @@
 import random
 from collections import deque
-
+import tensorflow as tf
 from model import NeuralNetworkInput
 from keras.models import Sequential
 from keras.layers import Dense, InputLayer, BatchNormalization
@@ -19,10 +19,10 @@ class NeuralNetwork:
         self.memory = np.ndarray(shape=(0, 2))
         self.sample_batch_size = 32
         self.max_replay_memory_size = 4_194_304
-        # self.raising_batch = 1024
         self.model = self._build_model()
         self.target_model = self._build_model()  # we use a separate target network
         self.load_weights()
+        self.graph = tf.get_default_graph()
 
         self.target_model_counter = 0
         self.target_model_update_frequency = 1
@@ -33,6 +33,7 @@ class NeuralNetwork:
         self.target_model_counter += 1
         if self.target_model_counter > self.target_model_update_frequency:
             self.target_model.set_weights(self.model.get_weights())
+            self.target_model._make_predict_function()
             self.target_model_counter = 0
 
     def _build_model(self):
@@ -43,7 +44,9 @@ class NeuralNetwork:
             # Dense(26, activation="relu"),
             Dense(1, activation='linear'),
         ])
+        model._make_predict_function()  # prebuild for concurrency
         model.compile(loss='mse', optimizer=Adam(lr=self.learning_rate), metrics=['acc'])
+
         return model
 
     def load_weights(self):
@@ -52,6 +55,9 @@ class NeuralNetwork:
 
             self.model.load_weights(self.weight_backup)
             self.target_model.load_weights(self.weight_backup)
+
+            self.model._make_predict_function()
+            self.target_model._make_predict_function()
 
     def save_model(self):
         if self._is_learning_mode:
@@ -62,8 +68,9 @@ class NeuralNetwork:
             inp = NeuralNetworkInput.from_proto(e.state)
             target = e.target
 
-            # contains check really expensive
+            # contains check really expensive, TODO find faster workaround
             # if not np.all(np.any(np.isin(self.memory, [inp, target]), axis=0)):
+
             if len(self.memory) > self.max_replay_memory_size:
                 self.memory = np.delete(self.memory, 0, axis=0)
             self.memory = np.append(self.memory, [[inp, target]], axis=0)
@@ -76,21 +83,16 @@ class NeuralNetwork:
             mini_batch = self.memory[idx, :]
             x_train = np.array([s[0].get_state() for s in mini_batch])
             y_train = np.array([s[1] for s in mini_batch])
-            # sample_batch = random.sample(self.memory, self.sample_batch_size)
-            # x_train = np.array([s[0].get_state() for s, _ in sample_batch])
-            # y_train = np.array([t for _, t in sample_batch])
 
-            self.model.fit(x_train, y_train, epochs=1,
-                           batch_size=len(mini_batch))  # , callbacks=[self.tensorboard])
-            self._update_target_model()
-
-        # sample_batch = random.sample(self.memory, self.sample_batch_size)
-
-        # self.sample_batch_size += self.raising_batch
+            with self.graph.as_default():
+                self.model.fit(x_train, y_train, epochs=1,
+                               batch_size=len(mini_batch))
+                self._update_target_model()
 
     def get_values(self, inputs: [NeuralNetworkInput]):
         states = np.array([i.get_state() for i in inputs])
-        values = self.target_model.predict(states).flatten()
+        with self.graph.as_default():
+            values = self.target_model.predict(states).flatten()
         return values
 
     def set_learning_mode(self, isTraining):

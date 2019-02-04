@@ -4,50 +4,29 @@ import socket
 import struct
 import signal
 import time
+import socket
+from threading import Thread
 
 from message_pb2 import *
 
-import numpy as np
-
 from message_handler import MessageHandler
-from neural_network import NeuralNetwork
 
-nn = NeuralNetwork()
-
-message_handler = MessageHandler(nn=nn)
+handler = MessageHandler.instance()  # threadsafe singleton
+keepAlive = True
 
 
-class tcp_server:
-    def __init__(self):
+class ClientThread(Thread):
+
+    def __init__(self, conn):
+        Thread.__init__(self)
+        self.conn = conn
         self.message = Message()
         self.message.endConnection = False
         self.data_m = Message()
-        signal.signal(signal.SIGINT, self.signal_handler)
-        tcp_ip = '0.0.0.0'
-        port = 5555
-
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.socket.bind((tcp_ip, port))
-        self.socket.listen(2)
-
-
-        self.conn, self.addr = self.socket.accept()
-
-
-        self.connection = True
-        print("Agent connected")
-
-    def signal_handler(self, signal, frame):
-        print(f"saving model...")
-        nn.save_model()
-        print("SIGINT caught, exiting ...")
-        if self.connection:
-            self.connection = False
-        self.conn.close()
 
     def run(self):
-        while self.connection:
-
+        global keepAlive
+        while keepAlive:
             # Listen for client request with 5 characters header
             data_hdr = self.conn.recv(5)
 
@@ -66,18 +45,23 @@ class tcp_server:
             data = b''.join(chunks)
 
             if sz != len(data):
+                print("HEADER SIZE DOES NOT MATCH")
                 print(f"header size: {sz} , actual size: {len(data)}")
                 break
 
             try:
                 self.message.ParseFromString(data)
             except:
+                print("PARSING FAILED")
                 print(f"header size: {sz} , actual size: {len(data)}")
 
-            self.connection = not self.message.endConnection
+            keepAlive = not self.message.endConnection
+
             self.data_m.endConnection = False
 
-            self.data_m = message_handler.on_message(self.message)
+            global handler
+            self.data_m = handler.on_message(self.message)
+
             s = self.data_m.SerializeToString()
             total_len = 5 + self.data_m.ByteSize()
             self.conn.sendall(bytes(str(total_len).zfill(5), "utf-8") + s)
@@ -87,13 +71,55 @@ class tcp_server:
         self.conn.close()
 
 
-if __name__ == '__main__':
-    client = tcp_server()
+class Server:
+    def __init__(self):
+        signal.signal(signal.SIGINT, self.signal_handler)
+        tcp_ip = '0.0.0.0'
+        port = 5555
 
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.socket.bind((tcp_ip, port))
+
+        self.connections = []
+        threads = []
+
+        for _ in range(2):
+            self.socket.listen(2)
+
+            conn = self.socket.accept()[0]
+            self.connections.append(conn)
+
+            print("Agent connected")
+
+            thread = ClientThread(conn)
+            thread.start()
+            threads.append(thread)
+
+        for t in threads:
+            t.join()
+
+        self.connection = True
+
+    def signal_handler(self, signal, frame):
+        print(f"saving model...")
+
+        global handler
+        handler.nn.save_model()
+
+        print("SIGINT caught, exiting ...")
+        global keepAlive
+        if keepAlive:
+            keepAlive = False
+
+        for conn in self.connections:
+            conn.close()
+
+
+if __name__ == '__main__':
     try:
-        client.run()
+        server = Server()
     except Exception as e:
         print(f"server process ended. Reason: {str(e)}")
     finally:
         print(f"saving model...")
-        nn.save_model()
+        handler.nn.save_model()

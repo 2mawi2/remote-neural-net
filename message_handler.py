@@ -1,12 +1,23 @@
 from model import NeuralNetworkInput
 from neural_network import NeuralNetwork
 from message_pb2 import *
+import threading
 
 
-class MessageHandler:
+class MessageHandler(object):
+    __singleton_lock = threading.Lock()
+    __singleton_instance = None
 
     def __init__(self, nn: NeuralNetwork):
         self.nn = nn
+
+    @classmethod
+    def instance(cls):
+        if not cls.__singleton_instance:
+            with cls.__singleton_lock:
+                if not cls.__singleton_instance:
+                    cls.__singleton_instance = cls(nn=NeuralNetwork())
+        return cls.__singleton_instance
 
     def on_message(self, m: Message) -> Message:
         # print("type: " + str(m.__str__()))
