@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-import socket
-import struct
 import signal
 import time
 import socket
@@ -12,24 +10,26 @@ from message_pb2 import *
 from message_handler import MessageHandler
 
 handler_lock = Lock()
-handler = MessageHandler.instance()  # threadsafe singleton
 keepAlive = True
+HEADER_SIZE = 5
 
 
 class ClientThread(Thread):
 
-    def __init__(self, conn):
+    def __init__(self, conn, local_handler: MessageHandler):
         Thread.__init__(self)
         self.conn = conn
         self.message = Message()
         self.message.endConnection = False
         self.data_m = Message()
+        self.local_handler = local_handler
 
     def run(self):
         global keepAlive
         while keepAlive:
             # Listen for client request with 5 characters header
-            data_hdr = self.conn.recv(5)
+
+            data_hdr = self.conn.recv(HEADER_SIZE)
 
             if not data_hdr:
                 break
@@ -59,14 +59,11 @@ class ClientThread(Thread):
 
             self.data_m.endConnection = False
 
-            global handler_lock
-            global handler
-
             with handler_lock:
-                self.data_m = handler.on_message(self.message)
+                self.data_m = self.local_handler.on_message(self.message)
 
             s = self.data_m.SerializeToString()
-            total_len = 5 + self.data_m.ByteSize()
+            total_len = HEADER_SIZE + self.data_m.ByteSize()
             self.conn.sendall(bytes(str(total_len).zfill(5), "utf-8") + s)
             time.sleep(0.001)
 
@@ -75,7 +72,7 @@ class ClientThread(Thread):
 
 
 class Server:
-    def __init__(self):
+    def __init__(self, server_handler: MessageHandler):
         signal.signal(signal.SIGINT, self.signal_handler)
         tcp_ip = '0.0.0.0'
         port = 5555
@@ -94,7 +91,7 @@ class Server:
 
             print("Agent connected")
 
-            thread = ClientThread(conn)
+            thread = ClientThread(conn, server_handler)
             thread.start()
             threads.append(thread)
 
@@ -105,9 +102,8 @@ class Server:
 
     def signal_handler(self, signal, frame):
         print(f"saving model...")
-
-        global handler
-        handler.nn.save_model()
+        with handler_lock:
+            handler.nn.save_model()
 
         print("SIGINT caught, exiting ...")
         global keepAlive
@@ -119,10 +115,13 @@ class Server:
 
 
 if __name__ == '__main__':
+    handler = MessageHandler.instance()
+
     try:
-        server = Server()
+        server = Server(handler)
     except Exception as e:
         print(f"server process ended. Reason: {str(e)}")
-    finally:
-        print(f"saving model...")
-        handler.nn.save_model()
+        if "Address already in use" not in str(e):
+            handler.nn.save_model()
+
+    handler.nn.save_model()

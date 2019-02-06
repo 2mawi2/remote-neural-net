@@ -32,9 +32,10 @@ class NeuralNetwork:
     def _update_target_model(self):
         self.target_model_counter += 1
         if self.target_model_counter > self.target_model_update_frequency:
-            self.target_model.set_weights(self.model.get_weights())
-            self.target_model._make_predict_function()
-            self.target_model_counter = 0
+            with self.graph.as_default():
+                self.target_model.set_weights(self.model.get_weights())
+                self.target_model._make_predict_function()
+                self.target_model_counter = 0
 
     def _build_model(self):
         model = Sequential([
@@ -52,16 +53,17 @@ class NeuralNetwork:
     def load_weights(self):
         if not self._is_learning_mode:
             print("loading weight backup...")
+            with self.graph.as_default():
+                self.model.load_weights(self.weight_backup)
+                self.target_model.load_weights(self.weight_backup)
 
-            self.model.load_weights(self.weight_backup)
-            self.target_model.load_weights(self.weight_backup)
-
-            self.model._make_predict_function()
-            self.target_model._make_predict_function()
+                self.model._make_predict_function()
+                self.target_model._make_predict_function()
 
     def save_model(self):
         if self._is_learning_mode:
-            self.target_model.save(self.weight_backup)
+            with self.graph.as_default():
+                self.target_model.save(self.weight_backup)
 
     def learn(self, experiences):
         for e in experiences:
