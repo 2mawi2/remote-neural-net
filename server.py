@@ -116,12 +116,12 @@ class Server:
 
 if __name__ == '__main__':
     handler = MessageHandler.instance()
-
+    is_address_in_use = False
     try:
         server = Server(handler)
     except Exception as e:
         print(f"server process ended. Reason: {str(e)}")
-        if "Address already in use" not in str(e):
+        is_address_in_use = "Address already in use" in str(e)
+    finally:
+        if not is_address_in_use:
             handler.nn.save_model()
-
-    handler.nn.save_model()

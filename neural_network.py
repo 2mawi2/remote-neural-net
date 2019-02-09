@@ -1,11 +1,18 @@
 import random
 from collections import deque
-import tensorflow as tf
 from model import NeuralNetworkInput
 from keras.models import Sequential
 from keras.layers import Dense, InputLayer, BatchNormalization
 from keras.optimizers import Adam, RMSprop
+from keras import backend as K
+import tensorflow as tf
+
 import numpy as np
+
+config = tf.ConfigProto(intra_op_parallelism_threads=6, inter_op_parallelism_threads=2,
+                        allow_soft_placement=True, device_count={'CPU': 6})
+session = tf.Session(config=config)
+K.set_session(session)
 
 
 # from keras.callbacks import TensorBoard
@@ -15,13 +22,12 @@ class NeuralNetwork:
     def __init__(self):
         self.weight_backup = "weights.h5"
         self._is_learning_mode = True
-        self.learning_rate = 0.0025
+        self.learning_rate = 0.001
         self.memory = np.ndarray(shape=(0, 2))
-        self.sample_batch_size = 32
+        self.sample_batch_size = 64
         self.max_replay_memory_size = 4_194_304
         self.model = self._build_model()
         self.target_model = self._build_model()  # we use a separate target network
-        self.load_weights()
         self.graph = tf.get_default_graph()
 
         self.target_model_counter = 0
@@ -42,7 +48,6 @@ class NeuralNetwork:
             Dense(26, activation="relu", input_dim=13),
             Dense(26, activation="relu"),
             Dense(26, activation="relu"),
-            # Dense(26, activation="relu"),
             Dense(1, activation='linear'),
         ])
         model._make_predict_function()  # prebuild for concurrency
@@ -62,6 +67,7 @@ class NeuralNetwork:
 
     def save_model(self):
         if self._is_learning_mode:
+            print(f"saving model...")
             with self.graph.as_default():
                 self.target_model.save(self.weight_backup)
 
@@ -97,6 +103,6 @@ class NeuralNetwork:
             values = self.target_model.predict(states).flatten()
         return values
 
-    def set_learning_mode(self, isTraining):
-        self._is_learning_mode = isTraining
+    def set_learning_mode(self, is_learning_mode):
+        self._is_learning_mode = is_learning_mode
         self.load_weights()
